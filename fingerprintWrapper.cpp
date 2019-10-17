@@ -242,9 +242,11 @@ void FingerBoard::InputPassword(String pswd)
 {
 	if (!isTouching)
 	{
+    		Keyboard.write(177);//ESC
+    		delay(200);
 		Keyboard.println(pswd);
 		Keyboard.write(176); //ENTER
-
+    		Keyboard.write(176); //ENTER
 		isTouching = true;
 	}
 }
@@ -277,10 +279,10 @@ void FingerBoard::FPMXX_Cmd_Save_Finger(unsigned int storeID)
 	FPMXX_Save_Finger[5] = (storeID & 0xFF00) >> 8;
 	FPMXX_Save_Finger[6] = (storeID & 0x00FF);
 
-	for (i = 0; i < 7; i++) //¼ÆËãĞ£ÑéºÍ
+	for (i = 0; i < 7; i++) //è®¡ç®—æ ¡éªŒå’Œ
 		temp = temp + FPMXX_Save_Finger[i];
 
-	FPMXX_Save_Finger[7] = (temp & 0x00FF00) >> 8; //´æ·ÅĞ£ÑéÊı¾İ
+	FPMXX_Save_Finger[7] = (temp & 0x00FF00) >> 8; //å­˜æ”¾æ ¡éªŒæ•°æ®
 	FPMXX_Save_Finger[8] = temp & 0x0000FF;
 
 	FPMXX_Send_Cmd(9, FPMXX_Save_Finger, 12);
@@ -292,7 +294,7 @@ void FingerBoard::FPMXX_Send_Cmd(unsigned char length, unsigned char* address, u
 
 	sensorSerial->flush();
 
-	for (i = 0; i < 6; i++) //°üÍ·
+	for (i = 0; i < 6; i++) //åŒ…å¤´
 	{
 		sensorSerial->write(FPMXX_Pack_Head[i]);
 	}
@@ -330,10 +332,10 @@ void FingerBoard::FPMXX_Cmd_StoreTemplate(unsigned int ID)
 	FPMXX_Save_Finger[5] = (ID & 0xFF00) >> 8;
 	FPMXX_Save_Finger[6] = (ID & 0x00FF);
 
-	for (int i = 0; i < 7; i++) //¼ÆËãĞ£ÑéºÍ
+	for (int i = 0; i < 7; i++) //è®¡ç®—æ ¡éªŒå’Œ
 		temp = temp + FPMXX_Save_Finger[i];
 
-	FPMXX_Save_Finger[7] = (temp & 0x00FF00) >> 8; //´æ·ÅĞ£ÑéÊı¾İ
+	FPMXX_Save_Finger[7] = (temp & 0x00FF00) >> 8; //å­˜æ”¾æ ¡éªŒæ•°æ®
 	FPMXX_Save_Finger[8] = temp & 0x0000FF;
 
 	sensorSerial->write((char*)FPMXX_Pack_Head, 6);
@@ -346,21 +348,21 @@ bool FingerBoard::FPMXX_Add_Fingerprint(unsigned int  writeID)
 {
 	FPMXX_Send_Cmd(6, FPMXX_Get_Img, 12);
 
-	//ÅĞ¶Ï½ÓÊÕµ½µÄÈ·ÈÏÂë,µÈÓÚ0Ö¸ÎÆ»ñÈ¡³É¹¦    
+	//åˆ¤æ–­æ¥æ”¶åˆ°çš„ç¡®è®¤ç ,ç­‰äº0æŒ‡çº¹è·å–æˆåŠŸ    
 	if (FPMXX_RECEIVE_BUFFER[9] == 0)
 	{
 		delay(100);
-		FPMXX_Send_Cmd(7, FPMXX_Img_To_Buffer1, 12); //·¢ËÍÃüÁî ½«Í¼Ïñ×ª»»³É ÌØÕ÷Âë ´æ·ÅÔÚ CHAR_buffer1
+		FPMXX_Send_Cmd(7, FPMXX_Img_To_Buffer1, 12); //å‘é€å‘½ä»¤ å°†å›¾åƒè½¬æ¢æˆ ç‰¹å¾ç  å­˜æ”¾åœ¨ CHAR_buffer1
 
 		while (1)
 		{
 			FPMXX_Send_Cmd(6, FPMXX_Get_Img, 12);
 
-			//ÅĞ¶Ï½ÓÊÕµ½µÄÈ·ÈÏÂë,µÈÓÚ0Ö¸ÎÆ»ñÈ¡³É¹¦   
+			//åˆ¤æ–­æ¥æ”¶åˆ°çš„ç¡®è®¤ç ,ç­‰äº0æŒ‡çº¹è·å–æˆåŠŸ   
 			if (FPMXX_RECEIVE_BUFFER[9] == 0)
 			{
 				delay(500);
-				FPMXX_Send_Cmd(7, FPMXX_Img_To_Buffer2, 12); //·¢ËÍÃüÁî ½«Í¼Ïñ×ª»»³É ÌØÕ÷Âë ´æ·ÅÔÚ CHAR_buffer1
+				FPMXX_Send_Cmd(7, FPMXX_Img_To_Buffer2, 12); //å‘é€å‘½ä»¤ å°†å›¾åƒè½¬æ¢æˆ ç‰¹å¾ç  å­˜æ”¾åœ¨ CHAR_buffer1
 				FPMXX_Cmd_StoreTemplate(writeID);
 
 				return true;
@@ -375,8 +377,8 @@ bool FingerBoard::FPMXX_Add_Fingerprint(unsigned int  writeID)
 
 void FingerBoard::FPMXX_Delete_All_Fingerprint()
 {
-	//Ìí¼ÓÇå¿ÕÖ¸ÎÆÖ¸Áî
-	FPMXX_Send_Cmd(6, FPMXX_Delete_All_Model, 12); //·¢ËÍÃüÁî ½«Í¼Ïñ×ª»»³É ÌØÕ÷Âë ´æ·ÅÔÚ CHAR_buffer1
+	//æ·»åŠ æ¸…ç©ºæŒ‡çº¹æŒ‡ä»¤
+	FPMXX_Send_Cmd(6, FPMXX_Delete_All_Model, 12); //å‘é€å‘½ä»¤ å°†å›¾åƒè½¬æ¢æˆ ç‰¹å¾ç  å­˜æ”¾åœ¨ CHAR_buffer1
 
 	delay(2000);
 }
