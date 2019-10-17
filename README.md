@@ -1,8 +1,8 @@
 # FingerBoard
-
+## 这是fork @david-pzh的FingerBoard项目
 ### 给机械键盘添加指纹识别功能，这是Arduino固件的代码，详细项目介绍请看这篇文章:
 
-[如何制作一个带指纹识别的机械键盘 - 稚晖的文章 - 知乎](https://zhuanlan.zhihu.com/p/64809151)
+[FingerBoard项目详情](https://github.com/david-pzh/FingerBoard)
 
 
 
@@ -13,12 +13,4 @@
 添加手指的方法：串口发送 **A,3 换行** 则表示注册手指为3号，根据串口提示放上手指收到ok即可。
 
 删除手指的方法：直接添加一个覆盖，或者发送 **D 换行** 删除所有手指数据。
-
-可以自行修改CmdCheck函数添加自己的指令。
-
-好用请给个星星~
-
-![](https://pic2.zhimg.com/80/v2-c36e5037d18e0e1221b053a897cdcbc5_hd.jpg)
-
-![](https://pic3.zhimg.com/80/v2-e08f3cd50c4af32c399af8d1e325d2be_hd.jpg)
 
