@@ -1,7 +1,7 @@
-# Window-hello-Finger-(arduino) forked from david-pzh/FingerBoard
+# Window-hello-Finger (arduino) 
 
 ## 这是fork @david-pzh的FingerBoard项目
-### 给机械键盘添加指纹识别功能，这是Arduino固件的代码，详细项目介绍请看这篇文章:
+### 详细项目介绍请看这篇文章:
 
 [FingerBoard项目详情](https://github.com/david-pzh/FingerBoard)
 
